@@ -35,7 +35,7 @@ jobs:
         name: Upload directly archive
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: zipgreet.zip
+          file: zipgreet-version-$tag.zip
           tag: ${{ github.ref }}
 
   release-assets:
