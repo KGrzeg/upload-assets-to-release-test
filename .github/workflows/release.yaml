@@ -36,6 +36,7 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: zipgreet.zip
+          asset_name: zipgreet-version-$tag.zip
           tag: ${{ github.ref }}
 
   release-assets:
