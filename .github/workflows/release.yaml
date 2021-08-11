@@ -1,0 +1,43 @@
+name: Build and upload "binaries"
+
+on: 
+  push:
+    tags:
+      - '*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Build
+        shell: bash
+        run: echo " and KGrzeg" >> build.txt
+      - name: Store Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          path: build.txt
+          name: linux
+
+  release-assets:
+    name: Publish 
+    needs: [release]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform: [linux]
+    steps:
+      - uses: actions/download-artifact@v2
+        name: Grab ${{ matrix.platform }}
+        with:
+          name: ${{ matrix.platform }}
+          path: ${{ matrix.platform }}.zip
+      - name: Log files
+        run: ls -alR
+      - uses: svenstaro/upload-release-action@v2
+        name: Upload ${{ matrix.platform }} to release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ matrix.platform }}.zip
+          tag: ${{ github.ref }}
+          body: "Are files attached?"
