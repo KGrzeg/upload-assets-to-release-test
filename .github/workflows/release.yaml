@@ -21,10 +21,21 @@ jobs:
       - name: Log files
         run: ls -alR 
       - uses: svenstaro/upload-release-action@v2
-        name: Upload directly
+        name: Upload directly text file
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: greetings.txt
+          tag: ${{ github.ref }}
+      - uses: papeloto/action-zip@v1
+        name: Zip greetings
+        with:
+          files: greetings.txt
+          dest: zipgreet.zip
+      - uses: svenstaro/upload-release-action@v2
+        name: Upload directly archive
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: zipgreet.zip
           tag: ${{ github.ref }}
 
   release-assets:
