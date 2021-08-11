@@ -46,6 +46,8 @@ jobs:
       matrix:
         platform: [linux]
     steps:
+      - uses: actions/checkout@master
+        name: maybe just need checkout
       - uses: actions/download-artifact@v2
         name: Grab ${{ matrix.platform }}
         with:
@@ -58,6 +60,7 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ matrix.platform }}.zip
+          asset_name: "linlinlinlinux.zip"
           tag: ${{ github.ref }}
           body: "Are files attached?"
       
