@@ -12,12 +12,20 @@ jobs:
       - uses: actions/checkout@master
       - name: Build
         shell: bash
-        run: echo " and KGrzeg" >> greetings.txt
+        run: echo "and KGrzeg" >> greetings.txt
       - name: Store Artifact
         uses: actions/upload-artifact@v2
         with:
           path: greetings.txt
           name: linux
+      - name: Log files
+        run: ls -alR 
+      - uses: svenstaro/upload-release-action@v2
+        name: Upload directly
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: greetings.txt
+          tag: ${{ github.ref }}
 
   release-assets:
     name: Publish 
@@ -41,3 +49,4 @@ jobs:
           file: ${{ matrix.platform }}.zip
           tag: ${{ github.ref }}
           body: "Are files attached?"
+      
